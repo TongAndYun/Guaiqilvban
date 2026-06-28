@@ -1,0 +1,14 @@
+{
+  "name": "miaoda-html-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "coding-html-devserver dev",
+    "build": "coding-html-devserver build"
+  },
+  "devDependencies": {
+    "@iga-pages/cli": "^1.0.8",
+    "@lark-apaas/coding-html-devserver": "^0.1.5"
+  }
+}
