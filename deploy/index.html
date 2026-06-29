@@ -103,6 +103,17 @@
             background: linear-gradient(90deg, #ff7675, #d63031);
             animation: pulse 0.5s infinite;
         }
+
+        /* 后门提示动画 */
+        @keyframes cheatFadeIn {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+        @keyframes cheatFadeOut {
+            from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            to { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+        }
+
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.6; }
@@ -391,6 +402,136 @@
             box-shadow: 0 0 30px rgba(255,217,61,0.5);
         }
 
+        .char-growth-info {
+            font-size: 9px;
+            color: #888;
+            margin-top: 4px;
+            line-height: 1.3;
+        }
+        .char-growth-info .growth-high {
+            color: #00b894;
+        }
+        .char-growth-info .growth-low {
+            color: #ff7675;
+        }
+
+        #charDetailOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+        #charDetailOverlay.active {
+            display: flex;
+        }
+        .char-detail-panel {
+            background: linear-gradient(135deg, #2d1b4e, #1a1a2e);
+            border: 2px solid #ffd93d;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 450px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            color: #fff;
+            position: relative;
+        }
+        .char-detail-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .char-detail-close:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        .char-detail-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .char-detail-avatar {
+            font-size: 64px;
+            margin-bottom: 10px;
+        }
+        .char-detail-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffd93d;
+        }
+        .char-detail-type {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+        }
+        .char-detail-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-bottom: 12px;
+        }
+        .char-detail-section-title {
+            color: #ffd93d;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .char-detail-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 12px;
+            font-size: 12px;
+        }
+        .char-detail-stat {
+            display: flex;
+            justify-content: space-between;
+        }
+        .char-detail-stat .stat-label {
+            color: #888;
+        }
+        .char-detail-stat .stat-value {
+            color: #fff;
+            font-weight: bold;
+        }
+        .char-detail-growth {
+            font-size: 10px;
+            margin-left: 4px;
+        }
+        .char-detail-growth.pos {
+            color: #00b894;
+        }
+        .char-detail-growth.neg {
+            color: #ff7675;
+        }
+        .char-detail-core-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+        .char-detail-core-count {
+            color: #a29bfe;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
         .achieve-char-section {
             margin-bottom: 16px;
         }
@@ -615,6 +756,161 @@
             font-size: 11px;
         }
 
+        /* 后门菜单 */
+        #cheatOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 300;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+        #cheatOverlay.active {
+            display: flex;
+        }
+        .cheat-panel {
+            background: linear-gradient(135deg, #2d1b4e, #1a1a2e);
+            border: 2px solid #e74c3c;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            color: #fff;
+            position: relative;
+        }
+        .cheat-panel::before {
+            content: '🔧 开发者模式';
+            position: absolute;
+            top: -1px;
+            left: 20px;
+            background: #e74c3c;
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 0 0 8px 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .cheat-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cheat-close:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        .cheat-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #e74c3c;
+            font-size: 18px;
+        }
+        .cheat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .cheat-btn {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            border: 1px solid #4a6572;
+            border-radius: 10px;
+            padding: 15px 12px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .cheat-btn:hover {
+            background: linear-gradient(135deg, #4a6572, #34495e);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .cheat-btn:active {
+            transform: translateY(0);
+        }
+        .cheat-btn-icon {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+        .cheat-btn-name {
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .cheat-btn-desc {
+            font-size: 10px;
+            color: #888;
+        }
+        .cheat-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .cheat-section-title {
+            color: #ffd93d;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .cheat-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 12px;
+        }
+        .cheat-stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 6px;
+        }
+        .cheat-stat-label {
+            color: #888;
+        }
+        .cheat-stat-value {
+            color: #00b894;
+            font-weight: bold;
+        }
+        .cheat-tip {
+            text-align: center;
+            color: #888;
+            font-size: 11px;
+            margin-top: 10px;
+        }
+        .cheat-btn-danger {
+            background: linear-gradient(135deg, #c0392b, #96281b);
+            border-color: #e74c3c;
+        }
+        .cheat-btn-danger:hover {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+        .cheat-btn-special {
+            background: linear-gradient(135deg, #8e44ad, #6c3483);
+            border-color: #9b59b6;
+        }
+        .cheat-btn-special:hover {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
 
         /* K键信息面板 */
         #infoPanel {
@@ -720,6 +1016,28 @@
             align-items: center;
             gap: 8px;
             margin-bottom: 6px;
+        }
+        .comp-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .comp-btn {
+            flex: 1;
+            padding: 6px 12px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 6px;
+            color: #fff;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .comp-btn:hover {
+            background: rgba(255,255,255,0.25);
+        }
+        .comp-btn:active {
+            transform: scale(0.95);
         }
         .info-empty {
             text-align: center;
@@ -1408,26 +1726,65 @@
                     <div class="char-avatar">🥷</div>
                     <div class="char-name">忍者喵</div>
                     <div class="char-desc">均衡型<br/>攻击+10%<br/>适合新手</div>
+                    <div class="char-growth-info">
+                        <span class="growth-high">攻+20%</span> · <span class="growth-high">速+15%</span>
+                    </div>
                 </div>
                 <div class="char-card" data-char="1">
                     <div class="char-avatar">🧙</div>
                     <div class="char-name">法师兔</div>
                     <div class="char-desc">远程型<br/>旅伴伤害+20%<br/>清怪能手</div>
+                    <div class="char-growth-info">
+                        <span class="growth-high">攻+10%</span> · <span class="growth-low">血-15%</span>
+                    </div>
                 </div>
                 <div class="char-card" data-char="2">
                     <div class="char-avatar">🛡️</div>
                     <div class="char-name">铁甲龟</div>
                     <div class="char-desc">坦克型<br/>生命+50%<br/>护甲+5</div>
+                    <div class="char-growth-info">
+                        <span class="growth-high">血+25%</span> · <span class="growth-high">甲+30%</span>
+                    </div>
                 </div>
                 <div class="char-card locked" data-char="3">
                     <div class="char-avatar">💰</div>
                     <div class="char-name">金币鼠</div>
                     <div class="char-desc">发育型<br/>金币+30%<br/>商店折扣</div>
+                    <div class="char-growth-info">
+                        <span class="growth-high">速+20%</span> · <span class="growth-low">攻-5%</span>
+                    </div>
                     <div class="char-unlock">通关普通解锁</div>
                 </div>
             </div>
 
             <button class="start-btn" onclick="startGame()">开始冒险</button>
+        </div>
+
+        <div id="charDetailOverlay">
+            <div class="char-detail-panel">
+                <button class="char-detail-close" onclick="closeCharDetail()">✕</button>
+                <div class="char-detail-header">
+                    <div class="char-detail-avatar" id="detailAvatar">🥷</div>
+                    <div class="char-detail-name" id="detailName">忍者喵</div>
+                    <div class="char-detail-type" id="detailType">均衡型</div>
+                </div>
+                <div class="char-detail-section">
+                    <div class="char-detail-section-title">💜 梦境核心</div>
+                    <div class="char-detail-core-info">
+                        <span>已收集</span>
+                        <span class="char-detail-core-count"><span id="detailCoreCount">0</span> / <span id="detailCoreCap">5</span></span>
+                    </div>
+                    <div class="char-detail-stats" id="detailCoreBonus"></div>
+                </div>
+                <div class="char-detail-section">
+                    <div class="char-detail-section-title">📊 基础属性</div>
+                    <div class="char-detail-stats" id="detailBaseStats"></div>
+                </div>
+                <div class="char-detail-section">
+                    <div class="char-detail-section-title">📈 成长值</div>
+                    <div class="char-detail-stats" id="detailGrowth"></div>
+                </div>
+            </div>
         </div>
 
         <div id="gameOver">
@@ -1444,6 +1801,81 @@
         </div>
 
         <div id="unlockAllToast">🔓 已解锁全部难度和角色！</div>
+
+        <div id="cheatOverlay">
+            <div class="cheat-panel">
+                <button class="cheat-close" onclick="closeCheatMenu()">✕</button>
+                <div class="cheat-title">🔧 开发者模式</div>
+
+                <div class="cheat-section">
+                    <div class="cheat-section-title">📊 当前状态</div>
+                    <div class="cheat-stats">
+                        <div class="cheat-stat"><span class="cheat-stat-label">生命</span><span class="cheat-stat-value" id="cheatHp">-</span></div>
+                        <div class="cheat-stat"><span class="cheat-stat-label">攻击</span><span class="cheat-stat-value" id="cheatAtk">-</span></div>
+                        <div class="cheat-stat"><span class="cheat-stat-label">金币</span><span class="cheat-stat-value" id="cheatGold">-</span></div>
+                        <div class="cheat-stat"><span class="cheat-stat-label">梦境核心</span><span class="cheat-stat-value" id="cheatCore">-</span></div>
+                    </div>
+                </div>
+
+                <div class="cheat-grid">
+                    <button class="cheat-btn" onclick="cheatAddCore()">
+                        <div class="cheat-btn-icon">💜</div>
+                        <div class="cheat-btn-name">梦境核心 +5</div>
+                        <div class="cheat-btn-desc">增加5个核心</div>
+                    </button>
+                    <button class="cheat-btn" onclick="cheatAddGold()">
+                        <div class="cheat-btn-icon">💰</div>
+                        <div class="cheat-btn-name">金币 +1000</div>
+                        <div class="cheat-btn-desc">增加1000金币</div>
+                    </button>
+                    <button class="cheat-btn" onclick="cheatFullHp()">
+                        <div class="cheat-btn-icon">❤️</div>
+                        <div class="cheat-btn-name">恢复满血</div>
+                        <div class="cheat-btn-desc">生命回满</div>
+                    </button>
+                    <button class="cheat-btn" onclick="cheatAddAtk()">
+                        <div class="cheat-btn-icon">⚔️</div>
+                        <div class="cheat-btn-name">攻击 +10</div>
+                        <div class="cheat-btn-desc">增加10点攻击</div>
+                    </button>
+                    <button class="cheat-btn" onclick="cheatAddArmor()">
+                        <div class="cheat-btn-icon">🛡️</div>
+                        <div class="cheat-btn-name">护甲 +5</div>
+                        <div class="cheat-btn-desc">增加5点护甲</div>
+                    </button>
+                    <button class="cheat-btn" onclick="cheatAddSpeed()">
+                        <div class="cheat-btn-icon">⚡</div>
+                        <div class="cheat-btn-name">移速 +0.5</div>
+                        <div class="cheat-btn-desc">增加0.5移速</div>
+                    </button>
+                    <button class="cheat-btn" onclick="cheatAddHp()">
+                        <div class="cheat-btn-icon">💪</div>
+                        <div class="cheat-btn-name">生命 +50</div>
+                        <div class="cheat-btn-desc">增加50点生命</div>
+                    </button>
+                    <button class="cheat-btn" onclick="cheatFullRelic()">
+                        <div class="cheat-btn-icon">🎁</div>
+                        <div class="cheat-btn-name">满额道具</div>
+                        <div class="cheat-btn-desc">所有道具各1个</div>
+                    </button>
+                </div>
+
+                <div class="cheat-grid">
+                    <button class="cheat-btn cheat-btn-special" onclick="cheatBuffCompanion()">
+                        <div class="cheat-btn-icon">⭐</div>
+                        <div class="cheat-btn-name">强化旅伴</div>
+                        <div class="cheat-btn-desc">旅伴伤害翻倍</div>
+                    </button>
+                    <button class="cheat-btn cheat-btn-special" onclick="cheatUnlockAll()">
+                        <div class="cheat-btn-icon">🔓</div>
+                        <div class="cheat-btn-name">解锁全部</div>
+                        <div class="cheat-btn-desc">难度角色全解锁</div>
+                    </button>
+                </div>
+
+                <div class="cheat-tip">快捷键：Ctrl+Shift+D（游戏中）</div>
+            </div>
+        </div>
 
         <div id="achievePopup">
             <div class="achieve-popup-title">🏆 成就解锁</div>
@@ -1477,7 +1909,7 @@
                     <div class="settings-about">
                         <div class="about-avatar" id="aboutAvatar">🧸</div>
                         <div class="about-title">怪奇旅伴</div>
-                        <div class="about-ver">Bizarre Brigade v1.1</div>
+                        <div class="about-ver">Bizarre Brigade v1.2</div>
                         <div class="about-desc">一款梦境生存肉鸽游戏<br/>在梦境中与怪物战斗<br/>收集道具、招募旅伴<br/>挑战越来越强的敌人波次</div>
                         <div class="about-author">👤 作者：一个大伟丘&ZZZ</div>
                         <button class="start-btn" style="margin-top:16px;font-size:14px;padding:10px 24px;" onclick="shareGame()">🔗 分享游戏</button>
@@ -1553,6 +1985,9 @@
         let prevGameState = null;
         let waveClearPending = false;
         let remainingSpawns = 0;
+        
+        // 旅伴系统配置
+        const MAX_COMPANIONS = 5;
 
         // ===== 音效系统 =====
         let audioCtx = null;
@@ -1760,6 +2195,149 @@
                 setTimeout(() => toast.classList.remove('show'), 2500);
             }
         });
+
+        // ===== 增强后门功能 =====
+        let cheatBeforeState = null;
+
+        function openCheatMenu() {
+            if (gameState !== 'menu' && gameState !== 'gameover') {
+                cheatBeforeState = gameState;
+                gameState = 'paused';
+            }
+            updateCheatStats();
+            document.getElementById('cheatOverlay').classList.add('active');
+        }
+
+        function closeCheatMenu() {
+            document.getElementById('cheatOverlay').classList.remove('active');
+            if (cheatBeforeState) {
+                gameState = cheatBeforeState;
+                cheatBeforeState = null;
+            }
+        }
+
+        document.getElementById('cheatOverlay').addEventListener('click', function(e) {
+            if (e.target === this) closeCheatMenu();
+        });
+
+        function updateCheatStats() {
+            document.getElementById('cheatHp').textContent = player.hp + ' / ' + player.maxHp;
+            document.getElementById('cheatAtk').textContent = player.atk.toFixed(1);
+            document.getElementById('cheatGold').textContent = gold;
+            document.getElementById('cheatCore').textContent = (dreamCores.count[selectedChar] || 0) + ' / ' + dreamCores.capacity;
+        }
+
+        function cheatAddCore() {
+            if (gameState !== 'playing' && gameState !== 'shop' && gameState !== 'paused') return;
+            const current = dreamCores.count[selectedChar] || 0;
+            const toAdd = Math.min(5, dreamCores.capacity - current);
+            dreamCores.count[selectedChar] = current + toAdd;
+            saveDreamCores();
+            showCheatFeedback('💜 梦境核心 +' + toAdd);
+            updateCheatStats();
+        }
+
+        function cheatAddGold() {
+            if (gameState !== 'playing' && gameState !== 'shop' && gameState !== 'paused') return;
+            gold += 1000;
+            showCheatFeedback('💰 金币 +1000');
+            updateCheatStats();
+            updateUI();
+        }
+
+        function cheatFullHp() {
+            if (gameState !== 'playing' && gameState !== 'shop' && gameState !== 'paused') return;
+            player.hp = player.maxHp;
+            showCheatFeedback('❤️ 生命已回满');
+            updateCheatStats();
+        }
+
+        function cheatAddAtk() {
+            if (gameState !== 'playing' && gameState !== 'shop' && gameState !== 'paused') return;
+            player.atk += 10;
+            showCheatFeedback('⚔️ 攻击 +10');
+            updateCheatStats();
+        }
+
+        function cheatAddArmor() {
+            if (gameState !== 'playing' && gameState !== 'shop' && gameState !== 'paused') return;
+            player.armor += 5;
+            showCheatFeedback('🛡️ 护甲 +5');
+            updateCheatStats();
+        }
+
+        function cheatAddSpeed() {
+            if (gameState !== 'playing' && gameState !== 'shop' && gameState !== 'paused') return;
+            player.speed += 0.5;
+            showCheatFeedback('⚡ 移速 +0.5');
+            updateCheatStats();
+        }
+
+        function cheatAddHp() {
+            if (gameState !== 'playing' && gameState !== 'shop' && gameState !== 'paused') return;
+            player.maxHp += 50;
+            player.hp += 50;
+            showCheatFeedback('💪 生命 +50');
+            updateCheatStats();
+        }
+
+        function cheatFullRelic() {
+            if (gameState !== 'playing' && gameState !== 'shop' && gameState !== 'paused') return;
+            // 随机给予5个道具
+            const shuffled = [...relicPool].sort(() => Math.random() - 0.5);
+            for (let i = 0; i < Math.min(5, shuffled.length); i++) {
+                const r = shuffled[i];
+                // 应用道具效果
+                try { r.effect(); } catch(e) {}
+            }
+            showCheatFeedback('🎁 获得随机道具 x5');
+            updateCheatStats();
+        }
+
+        function cheatBuffCompanion() {
+            if (gameState !== 'playing' && gameState !== 'shop' && gameState !== 'paused') return;
+            player.companionDmg *= 2;
+            showCheatFeedback('⭐ 旅伴伤害 x2');
+            updateCheatStats();
+        }
+
+        function cheatUnlockAll() {
+            unlocks.difficulty = 5;
+            unlocks.character = 3;
+            saveUnlocks();
+            updateUnlockUI();
+            playSFX('unlock');
+            const toast = document.getElementById('unlockAllToast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+            showCheatFeedback('🔓 全部解锁！');
+        }
+
+        function showCheatFeedback(text) {
+            // 在屏幕中央显示提示
+            const feedback = document.createElement('div');
+            feedback.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(0,0,0,0.9);
+                color: #ffd93d;
+                padding: 15px 30px;
+                border-radius: 10px;
+                font-size: 18px;
+                font-weight: bold;
+                z-index: 9999;
+                pointer-events: none;
+                animation: cheatFadeIn 0.2s ease-out;
+            `;
+            feedback.textContent = text;
+            document.body.appendChild(feedback);
+            setTimeout(() => {
+                feedback.style.animation = 'cheatFadeOut 0.3s ease-in';
+                setTimeout(() => feedback.remove(), 300);
+            }, 800);
+        }
 
         // ===== ESC暂停菜单 =====
         let pausedBeforeState = null;
@@ -2061,10 +2639,14 @@
         }
 
         const characters = [
-            { name: '忍者喵', emoji: '🥷', hp: 100, atk: 1.1, speed: 3, armor: 0, goldBonus: 1, companionDmg: 1 },
-            { name: '法师兔', emoji: '🧙', hp: 80, atk: 1, speed: 2.8, armor: 0, goldBonus: 1, companionDmg: 1.2 },
-            { name: '铁甲龟', emoji: '🛡️', hp: 150, atk: 0.9, speed: 2, armor: 5, goldBonus: 1, companionDmg: 1 },
-            { name: '金币鼠', emoji: '💰', hp: 85, atk: 0.95, speed: 3.2, armor: 0, goldBonus: 1.3, companionDmg: 1 }
+            { name: '忍者喵', emoji: '🥷', hp: 100, atk: 1.1, speed: 3, armor: 0, goldBonus: 1, companionDmg: 1,
+              growth: { hp: 0.9, atk: 1.2, speed: 1.15, armor: 0.8 } },
+            { name: '法师兔', emoji: '🧙', hp: 80, atk: 1, speed: 2.8, armor: 0, goldBonus: 1, companionDmg: 1.2,
+              growth: { hp: 0.85, atk: 1.1, speed: 0.95, armor: 0.9 } },
+            { name: '铁甲龟', emoji: '🛡️', hp: 150, atk: 0.9, speed: 2, armor: 5, goldBonus: 1, companionDmg: 1,
+              growth: { hp: 1.25, atk: 0.85, speed: 0.8, armor: 1.3 } },
+            { name: '金币鼠', emoji: '💰', hp: 85, atk: 0.95, speed: 3.2, armor: 0, goldBonus: 1.3, companionDmg: 1,
+              growth: { hp: 0.9, atk: 0.95, speed: 1.2, armor: 0.85 } }
         ];
 
         let player = {
@@ -2098,38 +2680,38 @@
         const relicPool = [
             {
                 id: 'atk1', name: '锋利之刃', emoji: '🗡️',
-                desc: '攻击力+20%', descNeg: '移速-5%',
+                desc: '攻击力+5', descNeg: '移速-0.2',
                 price: 20,
-                effect: () => { player.atk *= 1.2; },
-                negEffect: () => { player.speed *= 0.95; }
+                effect: () => { const g = characters[selectedChar].growth; player.atk += applyGrowth('atk', 5, g.atk); },
+                negEffect: () => { const g = characters[selectedChar].growth; player.speed -= applyGrowth('speed', 0.2, g.speed); }
             },
             {
                 id: 'hp1', name: '生命之心', emoji: '❤️',
-                desc: '最大生命+30', descNeg: '护甲-3',
+                desc: '最大生命+30', descNeg: '护甲-2',
                 price: 25,
-                effect: () => { player.maxHp += 30; player.hp += 30; },
-                negEffect: () => { player.armor -= 3; }
+                effect: () => { const g = characters[selectedChar].growth; const val = applyGrowth('hp', 30, g.hp); player.maxHp += val; player.hp += val; },
+                negEffect: () => { const g = characters[selectedChar].growth; player.armor -= applyGrowth('armor', 2, g.armor); }
             },
             {
                 id: 'spd1', name: '疾风之靴', emoji: '👟',
-                desc: '移速+20%', descNeg: '最大生命-10%',
+                desc: '移速+0.4', descNeg: '最大生命-15',
                 price: 20,
-                effect: () => { player.speed *= 1.2; },
-                negEffect: () => { player.maxHp = Math.floor(player.maxHp * 0.9); player.hp = Math.min(player.hp, player.maxHp); }
+                effect: () => { const g = characters[selectedChar].growth; player.speed += applyGrowth('speed', 0.4, g.speed); },
+                negEffect: () => { const g = characters[selectedChar].growth; const val = applyGrowth('hp', 15, g.hp); player.maxHp = Math.max(1, player.maxHp - val); player.hp = Math.min(player.hp, player.maxHp); }
             },
             {
                 id: 'arm1', name: '铁甲护符', emoji: '🛡️',
-                desc: '护甲+3', descNeg: '攻击力-10%',
+                desc: '护甲+3', descNeg: '攻击力-2',
                 price: 25,
-                effect: () => { player.armor += 3; },
-                negEffect: () => { player.atk *= 0.9; }
+                effect: () => { const g = characters[selectedChar].growth; player.armor += applyGrowth('armor', 3, g.armor); },
+                negEffect: () => { const g = characters[selectedChar].growth; player.atk = Math.max(1, player.atk - applyGrowth('atk', 2, g.atk)); }
             },
             {
                 id: 'gold1', name: '金币磁铁', emoji: '🧲',
-                desc: '金币获取+25%', descNeg: '攻击力-5%',
+                desc: '金币获取+25%', descNeg: '攻击力-2',
                 price: 30,
                 effect: () => { player.goldBonus *= 1.25; },
-                negEffect: () => { player.atk *= 0.95; }
+                negEffect: () => { const g = characters[selectedChar].growth; player.atk = Math.max(1, player.atk - applyGrowth('atk', 2, g.atk)); }
             },
             {
                 id: 'range1', name: '远视之镜', emoji: '🔭',
@@ -2140,31 +2722,31 @@
             },
             {
                 id: 'speed1', name: '狂暴药剂', emoji: '⚡',
-                desc: '攻速+30%', descNeg: '最大生命-15%',
+                desc: '攻速+30%', descNeg: '最大生命-20',
                 price: 30,
                 effect: () => { player.atkSpeed *= 1.3; },
-                negEffect: () => { player.maxHp = Math.floor(player.maxHp * 0.85); player.hp = Math.min(player.hp, player.maxHp); }
+                negEffect: () => { const g = characters[selectedChar].growth; const val = applyGrowth('hp', 20, g.hp); player.maxHp = Math.max(1, player.maxHp - val); player.hp = Math.min(player.hp, player.maxHp); }
             },
             {
                 id: 'heal1', name: '治愈之心', emoji: '💖',
                 desc: '恢复50生命', descNeg: '护甲-2',
                 price: 15,
                 effect: () => { player.hp = Math.min(player.maxHp, player.hp + 50); },
-                negEffect: () => { player.armor -= 2; }
+                negEffect: () => { const g = characters[selectedChar].growth; player.armor -= applyGrowth('armor', 2, g.armor); }
             },
             {
                 id: 'comp1', name: '旅伴强化', emoji: '⭐',
-                desc: '所有旅伴伤害+25%', descNeg: '玩家攻击-10%',
+                desc: '所有旅伴伤害+25%', descNeg: '玩家攻击-2',
                 price: 35,
                 effect: () => { player.companionDmg *= 1.25; },
-                negEffect: () => { player.atk *= 0.9; }
+                negEffect: () => { const g = characters[selectedChar].growth; player.atk = Math.max(1, player.atk - applyGrowth('atk', 2, g.atk)); }
             },
             {
                 id: 'time1', name: '时间沙漏', emoji: '⏳',
-                desc: '下波时间+10秒', descNeg: '移速-5%',
+                desc: '下波时间+10秒', descNeg: '移速-0.2',
                 price: 25,
                 effect: () => { waveTimeMax += 10; },
-                negEffect: () => { player.speed *= 0.95; }
+                negEffect: () => { const g = characters[selectedChar].growth; player.speed -= applyGrowth('speed', 0.2, g.speed); }
             },
             {
                 id: 'score1', name: '幸运四叶草', emoji: '🍀',
@@ -2175,122 +2757,122 @@
             },
             {
                 id: 'shadow1', name: '暗影斗篷', emoji: '🌑',
-                desc: '受伤无敌时间+0.3秒', descNeg: '最大生命-10%',
+                desc: '受伤无敌时间+0.3秒', descNeg: '最大生命-15',
                 price: 30,
                 effect: () => { player.invincibleDuration += 0.3; },
-                negEffect: () => { player.maxHp = Math.floor(player.maxHp * 0.9); player.hp = Math.min(player.hp, player.maxHp); }
+                negEffect: () => { const g = characters[selectedChar].growth; const val = applyGrowth('hp', 15, g.hp); player.maxHp = Math.max(1, player.maxHp - val); player.hp = Math.min(player.hp, player.maxHp); }
             },
             {
                 id: 'thorn1', name: '荆棘之甲', emoji: '🌵',
-                desc: '反弹5点伤害', descNeg: '护甲-3',
+                desc: '反弹5点伤害', descNeg: '护甲-2',
                 price: 28,
                 effect: () => { player.thorns += 5; },
-                negEffect: () => { player.armor -= 3; }
+                negEffect: () => { const g = characters[selectedChar].growth; player.armor -= applyGrowth('armor', 2, g.armor); }
             },
             {
                 id: 'vamp1', name: '吸血之牙', emoji: '🦇',
-                desc: '击杀回复15%敌人生命', descNeg: '最大生命-20%',
+                desc: '击杀回复15%敌人生命', descNeg: '最大生命-25',
                 price: 35,
                 effect: () => { player.lifesteal += 0.15; },
-                negEffect: () => { player.maxHp = Math.floor(player.maxHp * 0.8); player.hp = Math.min(player.hp, player.maxHp); }
+                negEffect: () => { const g = characters[selectedChar].growth; const val = applyGrowth('hp', 25, g.hp); player.maxHp = Math.max(1, player.maxHp - val); player.hp = Math.min(player.hp, player.maxHp); }
             },
             {
                 id: 'berserk1', name: '狂战士之斧', emoji: '🪓',
-                desc: '攻击力+40%', descNeg: '护甲-5',
+                desc: '攻击力+10', descNeg: '护甲-4',
                 price: 35,
-                effect: () => { player.atk *= 1.4; },
-                negEffect: () => { player.armor -= 5; }
+                effect: () => { const g = characters[selectedChar].growth; player.atk += applyGrowth('atk', 10, g.atk); },
+                negEffect: () => { const g = characters[selectedChar].growth; player.armor -= applyGrowth('armor', 4, g.armor); }
             },
             {
                 id: 'sage1', name: '贤者之石', emoji: '💎',
-                desc: '生命+20 & 护甲+2', descNeg: '攻速-15%',
+                desc: '生命+25 & 护甲+2', descNeg: '攻速-15%',
                 price: 30,
-                effect: () => { player.maxHp += 20; player.hp += 20; player.armor += 2; },
+                effect: () => { const g = characters[selectedChar].growth; const hpVal = applyGrowth('hp', 25, g.hp); player.maxHp += hpVal; player.hp += hpVal; player.armor += applyGrowth('armor', 2, g.armor); },
                 negEffect: () => { player.atkSpeed *= 0.85; }
             },
             {
                 id: 'bolt1', name: '闪电之靴', emoji: '👢',
-                desc: '移速+30%', descNeg: '护甲-3',
+                desc: '移速+0.6', descNeg: '护甲-3',
                 price: 25,
-                effect: () => { player.speed *= 1.3; },
-                negEffect: () => { player.armor -= 3; }
+                effect: () => { const g = characters[selectedChar].growth; player.speed += applyGrowth('speed', 0.6, g.speed); },
+                negEffect: () => { const g = characters[selectedChar].growth; player.armor -= applyGrowth('armor', 3, g.armor); }
             },
             {
                 id: 'guard1', name: '守护之盾', emoji: '🔰',
-                desc: '护甲+8', descNeg: '移速-20%',
+                desc: '护甲+8', descNeg: '移速-0.5',
                 price: 35,
-                effect: () => { player.armor += 8; },
-                negEffect: () => { player.speed *= 0.8; }
+                effect: () => { const g = characters[selectedChar].growth; player.armor += applyGrowth('armor', 8, g.armor); },
+                negEffect: () => { const g = characters[selectedChar].growth; player.speed -= applyGrowth('speed', 0.5, g.speed); }
             },
             {
                 id: 'greed1', name: '贪婪之戒', emoji: '💍',
-                desc: '金币获取+50%', descNeg: '最大生命-15%',
+                desc: '金币获取+50%', descNeg: '最大生命-20',
                 price: 40,
                 effect: () => { player.goldBonus *= 1.5; },
-                negEffect: () => { player.maxHp = Math.floor(player.maxHp * 0.85); player.hp = Math.min(player.hp, player.maxHp); }
+                negEffect: () => { const g = characters[selectedChar].growth; const val = applyGrowth('hp', 20, g.hp); player.maxHp = Math.max(1, player.maxHp - val); player.hp = Math.min(player.hp, player.maxHp); }
             },
             // ===== 新增道具 =====
             {
                 id: 'ultra_atk', name: '战神之剑', emoji: '⚔️',
-                desc: '攻击力+60%', descNeg: '护甲-5',
+                desc: '攻击力+25%', descNeg: '护甲-5',
                 price: 50,
-                effect: () => { player.atk *= 1.6; },
-                negEffect: () => { player.armor -= 5; }
+                effect: () => { player.atk *= 1.25; },
+                negEffect: () => { const g = characters[selectedChar].growth; player.armor -= applyGrowth('armor', 5, g.armor); }
             },
             {
                 id: 'ultra_spd', name: '闪电之翼', emoji: '🦅',
-                desc: '攻速+60%', descNeg: '最大生命-20%',
+                desc: '攻速+60%', descNeg: '最大生命-30',
                 price: 45,
                 effect: () => { player.atkSpeed *= 1.6; },
-                negEffect: () => { player.maxHp = Math.floor(player.maxHp * 0.8); player.hp = Math.min(player.hp, player.maxHp); }
+                negEffect: () => { const g = characters[selectedChar].growth; const val = applyGrowth('hp', 30, g.hp); player.maxHp = Math.max(1, player.maxHp - val); player.hp = Math.min(player.hp, player.maxHp); }
             },
             {
                 id: 'ultra_hp', name: '巨人心脏', emoji: '💪',
-                desc: '最大生命+80', descNeg: '移速-15%',
+                desc: '最大生命+80', descNeg: '移速-0.4',
                 price: 45,
-                effect: () => { player.maxHp += 80; player.hp += 80; },
-                negEffect: () => { player.speed *= 0.85; }
+                effect: () => { const g = characters[selectedChar].growth; const val = applyGrowth('hp', 80, g.hp); player.maxHp += val; player.hp += val; },
+                negEffect: () => { const g = characters[selectedChar].growth; player.speed -= applyGrowth('speed', 0.4, g.speed); }
             },
             {
                 id: 'ultra_armor', name: '龙鳞铠甲', emoji: '🐉',
                 desc: '护甲+12', descNeg: '金币-20%',
                 price: 50,
-                effect: () => { player.armor += 12; },
+                effect: () => { const g = characters[selectedChar].growth; player.armor += applyGrowth('armor', 12, g.armor); },
                 negEffect: () => { player.goldBonus *= 0.8; }
             },
             {
                 id: 'ultra_range', name: '鹰眼之镜', emoji: '🦅',
-                desc: '攻击范围+50%', descNeg: '移速-10%',
+                desc: '攻击范围+50%', descNeg: '移速-0.3',
                 price: 40,
                 effect: () => { player.atkRange *= 1.5; },
-                negEffect: () => { player.speed *= 0.9; }
+                negEffect: () => { const g = characters[selectedChar].growth; player.speed -= applyGrowth('speed', 0.3, g.speed); }
             },
             {
                 id: 'crit1', name: '暴击利刃', emoji: '🎯',
-                desc: '攻击力+35%', descNeg: '护甲-3',
+                desc: '攻击力+8', descNeg: '护甲-3',
                 price: 40,
-                effect: () => { player.atk *= 1.35; },
-                negEffect: () => { player.armor -= 3; }
+                effect: () => { const g = characters[selectedChar].growth; player.atk += applyGrowth('atk', 8, g.atk); },
+                negEffect: () => { const g = characters[selectedChar].growth; player.armor -= applyGrowth('armor', 3, g.armor); }
             },
             {
                 id: 'swift1', name: '疾风药剂', emoji: '💨',
-                desc: '移速+40%', descNeg: '攻击范围-20%',
+                desc: '移速+0.8', descNeg: '攻击范围-20%',
                 price: 35,
-                effect: () => { player.speed *= 1.4; },
+                effect: () => { const g = characters[selectedChar].growth; player.speed += applyGrowth('speed', 0.8, g.speed); },
                 negEffect: () => { player.atkRange *= 0.8; }
             },
             {
                 id: 'fury1', name: '狂暴之心', emoji: '❤️‍🔥',
-                desc: '攻速+40% & 移速+15%', descNeg: '护甲-4',
+                desc: '攻速+40% & 移速+0.3', descNeg: '护甲-4',
                 price: 50,
-                effect: () => { player.atkSpeed *= 1.4; player.speed *= 1.15; },
-                negEffect: () => { player.armor -= 4; }
+                effect: () => { player.atkSpeed *= 1.4; const g = characters[selectedChar].growth; player.speed += applyGrowth('speed', 0.3, g.speed); },
+                negEffect: () => { const g = characters[selectedChar].growth; player.armor -= applyGrowth('armor', 4, g.armor); }
             },
             {
                 id: 'stone1', name: '磐石护符', emoji: '🪨',
-                desc: '护甲+6 & 生命+30', descNeg: '金币-15%',
+                desc: '护甲+6 & 生命+35', descNeg: '金币-15%',
                 price: 40,
-                effect: () => { player.armor += 6; player.maxHp += 30; player.hp += 30; },
+                effect: () => { const g = characters[selectedChar].growth; player.armor += applyGrowth('armor', 6, g.armor); const hpVal = applyGrowth('hp', 35, g.hp); player.maxHp += hpVal; player.hp += hpVal; },
                 negEffect: () => { player.goldBonus *= 0.85; }
             },
             {
@@ -2309,31 +2891,31 @@
             },
             {
                 id: 'invincible1', name: '无敌披风', emoji: '🧥',
-                desc: '无敌时间+0.8秒', descNeg: '最大生命-15%',
+                desc: '无敌时间+0.8秒', descNeg: '最大生命-25',
                 price: 45,
                 effect: () => { player.invincibleDuration += 0.8; },
-                negEffect: () => { player.maxHp = Math.floor(player.maxHp * 0.85); player.hp = Math.min(player.hp, player.maxHp); }
+                negEffect: () => { const g = characters[selectedChar].growth; const val = applyGrowth('hp', 25, g.hp); player.maxHp = Math.max(1, player.maxHp - val); player.hp = Math.min(player.hp, player.maxHp); }
             },
             {
                 id: 'thorns2', name: '刺猬战甲', emoji: '🦔',
-                desc: '荆棘+8', descNeg: '移速-15%',
+                desc: '荆棘+8', descNeg: '移速-0.4',
                 price: 40,
                 effect: () => { player.thorns += 8; },
-                negEffect: () => { player.speed *= 0.85; }
+                negEffect: () => { const g = characters[selectedChar].growth; player.speed -= applyGrowth('speed', 0.4, g.speed); }
             },
             {
                 id: 'vamp2', name: '血族之牙', emoji: '🧛',
                 desc: '吸血+20%', descNeg: '护甲-5',
                 price: 50,
                 effect: () => { player.lifesteal += 0.2; },
-                negEffect: () => { player.armor -= 5; }
+                negEffect: () => { const g = characters[selectedChar].growth; player.armor -= applyGrowth('armor', 5, g.armor); }
             },
             {
                 id: 'combo1', name: '连击手套', emoji: '🥊',
-                desc: '攻速+50% & 攻击+20%', descNeg: '最大生命-25%',
+                desc: '攻速+50% & 攻击+15%', descNeg: '最大生命-35',
                 price: 55,
-                effect: () => { player.atkSpeed *= 1.5; player.atk *= 1.2; },
-                negEffect: () => { player.maxHp = Math.floor(player.maxHp * 0.75); player.hp = Math.min(player.hp, player.maxHp); }
+                effect: () => { player.atkSpeed *= 1.5; player.atk *= 1.15; },
+                negEffect: () => { const g = characters[selectedChar].growth; const val = applyGrowth('hp', 35, g.hp); player.maxHp = Math.max(1, player.maxHp - val); player.hp = Math.min(player.hp, player.maxHp); }
             },
             {
                 id: 'time2', name: '永恒沙漏', emoji: '⏰',
@@ -2344,24 +2926,24 @@
             },
             {
                 id: 'comp2', name: '旅伴圣典', emoji: '📖',
-                desc: '旅伴伤害+50%', descNeg: '玩家攻击-15%',
+                desc: '旅伴伤害+50%', descNeg: '玩家攻击-4',
                 price: 55,
                 effect: () => { player.companionDmg *= 1.5; },
-                negEffect: () => { player.atk *= 0.85; }
+                negEffect: () => { const g = characters[selectedChar].growth; player.atk = Math.max(1, player.atk - applyGrowth('atk', 4, g.atk)); }
             },
             {
                 id: 'survivor', name: '幸存者徽章', emoji: '🎖️',
-                desc: '生命+50 & 护甲+4', descNeg: '金币-20%',
+                desc: '生命+60 & 护甲+5', descNeg: '金币-20%',
                 price: 50,
-                effect: () => { player.maxHp += 50; player.hp += 50; player.armor += 4; },
+                effect: () => { const g = characters[selectedChar].growth; const hpVal = applyGrowth('hp', 60, g.hp); player.maxHp += hpVal; player.hp += hpVal; player.armor += applyGrowth('armor', 5, g.armor); },
                 negEffect: () => { player.goldBonus *= 0.8; }
             },
             {
                 id: 'assassin', name: '刺客匕首', emoji: '🗡️',
-                desc: '攻击+30% & 攻速+25%', descNeg: '生命-20',
+                desc: '攻击+12 & 攻速+25%', descNeg: '生命-25',
                 price: 45,
-                effect: () => { player.atk *= 1.3; player.atkSpeed *= 1.25; },
-                negEffect: () => { player.maxHp -= 20; player.hp = Math.min(player.hp, player.maxHp); }
+                effect: () => { const g = characters[selectedChar].growth; player.atk += applyGrowth('atk', 12, g.atk); player.atkSpeed *= 1.25; },
+                negEffect: () => { const g = characters[selectedChar].growth; const val = applyGrowth('hp', 25, g.hp); player.maxHp = Math.max(1, player.maxHp - val); player.hp = Math.min(player.hp, player.maxHp); }
             }
         ];
 
@@ -2386,6 +2968,11 @@
             keys[k] = true;
             if (k === 'k') {
                 toggleInfoPanel();
+            }
+            // Ctrl+Shift+D 打开后门菜单
+            if (e.ctrlKey && e.shiftKey && k === 'd') {
+                e.preventDefault();
+                openCheatMenu();
             }
             if (k === 'escape' && gameState === 'playing') {
                 togglePause();
@@ -2657,6 +3244,25 @@
             html += '</div>';
 
             html += '<div class="info-section">';
+            html += '<div class="info-section-title">💜 梦境核心</div>';
+            const coreCount = dreamCores.count[selectedChar] || 0;
+            const coreBonus = getDreamCoreBonus(selectedChar);
+            html += '<div class="info-row"><span class="label">已收集</span><span class="value">' + coreCount + ' / ' + dreamCores.capacity + '</span></div>';
+            html += '<div class="info-row"><span class="label">生命加成</span><span class="value positive">+' + coreBonus.hp + '</span></div>';
+            html += '<div class="info-row"><span class="label">攻击加成</span><span class="value positive">+' + coreBonus.atk + '</span></div>';
+            html += '<div class="info-row"><span class="label">移速加成</span><span class="value positive">+' + coreBonus.speed.toFixed(1) + '</span></div>';
+            html += '<div class="info-row"><span class="label">护甲加成</span><span class="value positive">+' + coreBonus.armor + '</span></div>';
+            html += '</div>';
+
+            html += '<div class="info-section">';
+            html += '<div class="info-section-title">📈 成长值</div>';
+            html += '<div class="info-row"><span class="label">生命成长</span><span class="value ' + (char.growth.hp >= 1 ? 'positive' : 'negative') + '">' + (char.growth.hp * 100).toFixed(0) + '%</span></div>';
+            html += '<div class="info-row"><span class="label">攻击成长</span><span class="value ' + (char.growth.atk >= 1 ? 'positive' : 'negative') + '">' + (char.growth.atk * 100).toFixed(0) + '%</span></div>';
+            html += '<div class="info-row"><span class="label">移速成长</span><span class="value ' + (char.growth.speed >= 1 ? 'positive' : 'negative') + '">' + (char.growth.speed * 100).toFixed(0) + '%</span></div>';
+            html += '<div class="info-row"><span class="label">护甲成长</span><span class="value ' + (char.growth.armor >= 1 ? 'positive' : 'negative') + '">' + (char.growth.armor * 100).toFixed(0) + '%</span></div>';
+            html += '</div>';
+
+            html += '<div class="info-section">';
             html += '<div class="info-section-title">🎯 技能说明</div>';
             html += '<div class="info-row"><span class="label">自动攻击</span><span class="value">自动锁定最近敌人</span></div>';
             html += '</div>';
@@ -2688,7 +3294,7 @@
                 return;
             }
             let html = '';
-            companions.forEach(c => {
+            companions.forEach((c, idx) => {
                 const base = companionTypes[c.type];
                 const typeName = base.type === 'melee' ? '近战' : base.type === 'ranged' ? '远程' : '冲撞';
                 html += '<div class="info-companion-card">';
@@ -2697,15 +3303,27 @@
                 html += '<div class="info-row"><span class="label">攻击范围</span><span class="value">' + Math.floor(c.range) + '</span></div>';
                 html += '<div class="info-row"><span class="label">攻击速度</span><span class="value">' + c.atkSpeed.toFixed(2) + ' 次/秒</span></div>';
                 html += '<div class="info-row"><span class="label">轨道距离</span><span class="value">' + c.orbitDist + '</span></div>';
+                html += '<div class="comp-actions"><button class="comp-btn" onclick="recallCompanionFromInfo(' + idx + ')">请离</button></div>';
                 html += '</div>';
             });
-            inventory.forEach(c => {
+            inventory.forEach((c, idx) => {
                 const base = companionTypes[c.type];
                 html += '<div class="info-companion-card" style="opacity:0.6">';
                 html += '<div class="comp-header"><span style="font-size:20px">' + base.emoji + '</span><span style="font-weight:bold;color:#ffd93d">' + base.name + '</span><span style="color:#ffd93d">' + '⭐'.repeat(c.star) + '</span><span style="color:#888;font-size:11px">待部署</span></div>';
+                html += '<div class="comp-actions"><button class="comp-btn" onclick="deployCompanionFromInfo(' + idx + ')">部署</button></div>';
                 html += '</div>';
             });
             container.innerHTML = html;
+        }
+        
+        function recallCompanionFromInfo(idx) {
+            recallCompanion(idx);
+            renderCompsInfo();
+        }
+        
+        function deployCompanionFromInfo(idx) {
+            deployCompanionFromInventory(idx);
+            renderCompsInfo();
         }
 
         // ===== 难度/角色选择 =====
@@ -2727,7 +3345,52 @@
                 document.querySelectorAll('.char-card').forEach(c => c.classList.remove('selected'));
                 card.classList.add('selected');
                 selectedChar = char;
+                openCharDetail(char);
             });
+        });
+
+        function openCharDetail(charIdx) {
+            const char = characters[charIdx];
+            const coreCount = dreamCores.count[charIdx] || 0;
+            const coreBonus = getDreamCoreBonus(charIdx);
+
+            document.getElementById('detailAvatar').textContent = char.emoji;
+            document.getElementById('detailName').textContent = char.name;
+
+            const typeMap = ['均衡型', '远程型', '坦克型', '发育型'];
+            document.getElementById('detailType').textContent = typeMap[charIdx];
+
+            document.getElementById('detailCoreCount').textContent = coreCount;
+            document.getElementById('detailCoreCap').textContent = dreamCores.capacity;
+
+            document.getElementById('detailCoreBonus').innerHTML =
+                '<div class="char-detail-stat"><span class="stat-label">❤️ 生命</span><span class="stat-value" style="color:#00b894">+' + coreBonus.hp + '</span></div>' +
+                '<div class="char-detail-stat"><span class="stat-label">⚔️ 攻击</span><span class="stat-value" style="color:#00b894">+' + coreBonus.atk + '</span></div>' +
+                '<div class="char-detail-stat"><span class="stat-label">👟 移速</span><span class="stat-value" style="color:#00b894">+' + coreBonus.speed.toFixed(1) + '</span></div>' +
+                '<div class="char-detail-stat"><span class="stat-label">🛡️ 护甲</span><span class="stat-value" style="color:#00b894">+' + coreBonus.armor + '</span></div>';
+
+            document.getElementById('detailBaseStats').innerHTML =
+                '<div class="char-detail-stat"><span class="stat-label">❤️ 生命</span><span class="stat-value">' + char.hp + '</span></div>' +
+                '<div class="char-detail-stat"><span class="stat-label">⚔️ 攻击</span><span class="stat-value">' + (10 * char.atk).toFixed(1) + '</span></div>' +
+                '<div class="char-detail-stat"><span class="stat-label">👟 移速</span><span class="stat-value">' + char.speed.toFixed(1) + '</span></div>' +
+                '<div class="char-detail-stat"><span class="stat-label">🛡️ 护甲</span><span class="stat-value">' + char.armor + '</span></div>';
+
+            const g = char.growth;
+            document.getElementById('detailGrowth').innerHTML =
+                '<div class="char-detail-stat"><span class="stat-label">❤️ 生命成长</span><span class="stat-value">' + (g.hp * 100).toFixed(0) + '%<span class="char-detail-growth ' + (g.hp >= 1 ? 'pos' : 'neg') + '">' + (g.hp >= 1 ? '↑' : '↓') + '</span></span></div>' +
+                '<div class="char-detail-stat"><span class="stat-label">⚔️ 攻击成长</span><span class="stat-value">' + (g.atk * 100).toFixed(0) + '%<span class="char-detail-growth ' + (g.atk >= 1 ? 'pos' : 'neg') + '">' + (g.atk >= 1 ? '↑' : '↓') + '</span></span></div>' +
+                '<div class="char-detail-stat"><span class="stat-label">👟 移速成长</span><span class="stat-value">' + (g.speed * 100).toFixed(0) + '%<span class="char-detail-growth ' + (g.speed >= 1 ? 'pos' : 'neg') + '">' + (g.speed >= 1 ? '↑' : '↓') + '</span></span></div>' +
+                '<div class="char-detail-stat"><span class="stat-label">🛡️ 护甲成长</span><span class="stat-value">' + (g.armor * 100).toFixed(0) + '%<span class="char-detail-growth ' + (g.armor >= 1 ? 'pos' : 'neg') + '">' + (g.armor >= 1 ? '↑' : '↓') + '</span></span></div>';
+
+            document.getElementById('charDetailOverlay').classList.add('active');
+        }
+
+        function closeCharDetail() {
+            document.getElementById('charDetailOverlay').classList.remove('active');
+        }
+
+        document.getElementById('charDetailOverlay').addEventListener('click', function(e) {
+            if (e.target === this) closeCharDetail();
         });
 
         function updateUnlockUI() {
@@ -2789,6 +3452,36 @@
             });
         }
 
+        let dreamCores = {
+            count: [0, 0, 0, 0],
+            capacity: 5,
+            hardCleared: [false, false, false, false]
+        };
+        try {
+            const savedCores = localStorage.getItem('bizarreBrigade_dreamCores');
+            if (savedCores) dreamCores = JSON.parse(savedCores);
+        } catch(e) {}
+
+        function saveDreamCores() {
+            try {
+                localStorage.setItem('bizarreBrigade_dreamCores', JSON.stringify(dreamCores));
+            } catch(e) {}
+        }
+
+        function getDreamCoreBonus(charIdx) {
+            const cores = dreamCores.count[charIdx] || 0;
+            return {
+                hp: cores * 15,
+                atk: cores * 2,
+                speed: cores * 0.1,
+                armor: cores * 1
+            };
+        }
+
+        function applyGrowth(stat, value, growth) {
+            return Math.round(value * growth * 10) / 10;
+        }
+
         updateUnlockUI();
 
         function startGame() {
@@ -2796,12 +3489,13 @@
 
             const char = characters[selectedChar];
             const diff = difficulties[selectedDiff];
+            const coreBonus = getDreamCoreBonus(selectedChar);
 
-            player.maxHp = char.hp;
-            player.hp = char.hp;
-            player.atk = 10 * char.atk;
-            player.speed = char.speed;
-            player.armor = char.armor;
+            player.maxHp = char.hp + coreBonus.hp;
+            player.hp = player.maxHp;
+            player.atk = 10 * char.atk + coreBonus.atk;
+            player.speed = char.speed + coreBonus.speed;
+            player.armor = char.armor + coreBonus.armor;
             player.goldBonus = char.goldBonus;
             player.companionDmg = char.companionDmg;
             player.thorns = 0;
@@ -2930,7 +3624,7 @@
         }
 
         function spawnBoss() {
-            if (gameState !== 'playing' && gameState !== 'info') return;
+            if (gameState !== 'playing' && gameState !== 'info' && gameState !== 'paused') return;
             const diff = difficulties[selectedDiff];
             const isEndless = selectedDiff === 5;
             const endlessMult = isEndless ? 1 + Math.max(0, wave - 15) * 0.15 : 1;
@@ -2999,6 +3693,13 @@
             if (selectedDiff >= 1 && unlocks.character < 3) {
                 unlocks.character = 3;
                 unlockText += '🎊 解锁新角色：金币鼠！';
+            }
+
+            if (selectedDiff >= 2 && !dreamCores.hardCleared[selectedChar] && isFinite(difficulties[selectedDiff].waves)) {
+                dreamCores.hardCleared[selectedChar] = true;
+                dreamCores.capacity += 5;
+                saveDreamCores();
+                unlockText += (unlockText ? '\n' : '') + '💜 梦境核心上限 +5！当前上限：' + dreamCores.capacity;
             }
 
             if (unlockText) {
@@ -3125,7 +3826,7 @@
                     }
                 }
                 updateCompanionOrbits();
-                if (companions.length < 3) {
+                if (companions.length < MAX_COMPANIONS) {
                     spawnCompanion(type, newStar);
                 } else {
                     inventory.unshift({ type, star: newStar });
@@ -3133,10 +3834,80 @@
             } else {
                 inventory.push({ type, star });
             }
-            while (companions.length < 3 && inventory.length > 0) {
+            while (companions.length < MAX_COMPANIONS && inventory.length > 0) {
                 const toDeploy = inventory.shift();
-                spawnCompanion(toDeploy.type, toDeploy.star);
+                const sameOnField = companions.filter(x => x.type === toDeploy.type && x.star === toDeploy.star).length;
+                const sameInInventory = inventory.filter(x => x.type === toDeploy.type && x.star === toDeploy.star).length;
+                
+                if (sameOnField + sameInInventory + 1 >= 3 && toDeploy.star < 3) {
+                    const newStar = toDeploy.star + 1;
+                    let removed = 0;
+                    for (let i = companions.length - 1; i >= 0 && removed < 2; i--) {
+                        if (companions[i].type === toDeploy.type && companions[i].star === toDeploy.star) {
+                            companions.splice(i, 1);
+                            removed++;
+                        }
+                    }
+                    for (let i = inventory.length - 1; i >= 0 && removed < 2; i--) {
+                        if (inventory[i].type === toDeploy.type && inventory[i].star === toDeploy.star) {
+                            inventory.splice(i, 1);
+                            removed++;
+                        }
+                    }
+                    updateCompanionOrbits();
+                    if (companions.length < MAX_COMPANIONS) {
+                        spawnCompanion(toDeploy.type, newStar);
+                    } else {
+                        inventory.unshift({ type: toDeploy.type, star: newStar });
+                    }
+                } else if (companions.length < MAX_COMPANIONS) {
+                    spawnCompanion(toDeploy.type, toDeploy.star);
+                } else {
+                    inventory.unshift(toDeploy);
+                    break;
+                }
             }
+            updateCompanionUI();
+            updateCompanionOrbits();
+        }
+
+        function deployCompanionFromInventory(idx) {
+            const c = inventory[idx];
+            inventory.splice(idx, 1);
+            
+            const sameOnField = companions.filter(x => x.type === c.type && x.star === c.star).length;
+            const sameInInventory = inventory.filter(x => x.type === c.type && x.star === c.star).length;
+            
+            if (sameOnField + sameInInventory + 1 >= 3 && c.star < 3) {
+                const newStar = c.star + 1;
+                let removed = 0;
+                
+                for (let i = companions.length - 1; i >= 0 && removed < 2; i--) {
+                    if (companions[i].type === c.type && companions[i].star === c.star) {
+                        companions.splice(i, 1);
+                        removed++;
+                    }
+                }
+                
+                for (let i = inventory.length - 1; i >= 0 && removed < 2; i--) {
+                    if (inventory[i].type === c.type && inventory[i].star === c.star) {
+                        inventory.splice(i, 1);
+                        removed++;
+                    }
+                }
+                
+                updateCompanionOrbits();
+                if (companions.length < MAX_COMPANIONS) {
+                    spawnCompanion(c.type, newStar);
+                } else {
+                    inventory.unshift({ type: c.type, star: newStar });
+                }
+            } else if (companions.length < MAX_COMPANIONS) {
+                spawnCompanion(c.type, c.star);
+            } else {
+                inventory.unshift(c);
+            }
+            
             updateCompanionUI();
             updateCompanionOrbits();
         }
@@ -3171,21 +3942,31 @@
             });
         }
 
+        function recallCompanion(idx) {
+            const c = companions[idx];
+            companions.splice(idx, 1);
+            inventory.push({ type: c.type, star: c.star });
+            updateCompanionUI();
+            updateCompanionOrbits();
+        }
+
         function updateCompanionUI() {
             const container = document.getElementById('companions');
             container.innerHTML = '';
-            companions.forEach(c => {
+            companions.forEach((c, idx) => {
                 const base = companionTypes[c.type];
                 const div = document.createElement('div');
                 div.className = 'companion-slot active';
                 div.innerHTML = '<div style="font-size:20px">' + base.emoji + '</div><div class="star">' + '⭐'.repeat(c.star) + '</div>';
+                div.onclick = () => recallCompanion(idx);
                 container.appendChild(div);
             });
-            inventory.forEach(c => {
+            inventory.forEach((c, idx) => {
                 const base = companionTypes[c.type];
                 const div = document.createElement('div');
                 div.className = 'companion-slot';
                 div.innerHTML = '<div style="font-size:20px">' + base.emoji + '</div><div class="star">' + '⭐'.repeat(c.star) + '</div>';
+                div.onclick = () => deployCompanionFromInventory(idx);
                 container.appendChild(div);
             });
         }
@@ -3267,15 +4048,72 @@
             }
 
             companions.forEach((c, i) => {
-                c.orbitAngle = (c.orbitAngle || 0) + (c.orbitSpeed || 0.02);
-                const angle = c.orbitAngle + (c.orbitOffset || 0);
-                const targetX = player.x + Math.cos(angle) * c.orbitDist;
-                const targetY = player.y + Math.sin(angle) * c.orbitDist;
+                const roamDist = c.orbitDist + 60; // 自由活动最大范围
+                const safeDist = c.orbitDist;       // 安全范围，返回此范围后解除返回状态
 
-                c.x += (targetX - c.x) * 0.15;
-                c.y += (targetY - c.y) * 0.15;
+                const distToPlayer = dist(c.x, c.y, player.x, player.y);
+                const targetEnemy = findNearestEnemy(c.x, c.y, c.range * 2);
 
+                // 状态标记
+                c.isReturning = c.isReturning || false;
+                c.hasAttacked = c.hasAttacked || false;
+
+                // 如果超出 roamDist，必须返回
+                if (distToPlayer > roamDist) {
+                    c.isReturning = true;
+                }
+
+                // 如果回到 safeDist 内，解除返回状态，可以重新追击
+                if (c.isReturning && distToPlayer <= safeDist) {
+                    c.isReturning = false;
+                    c.hasAttacked = false;
+                }
+
+                // 移动逻辑
+                let moveX = 0, moveY = 0;
+
+                if (c.isReturning) {
+                    // 优先返回主角附近
+                    const angleToPlayer = Math.atan2(player.y - c.y, player.x - c.x);
+                    moveX = Math.cos(angleToPlayer) * c.speed;
+                    moveY = Math.sin(angleToPlayer) * c.speed;
+                } else if (targetEnemy && !c.hasAttacked) {
+                    // 追击敌人时保持攻击距离，不完全贴上去
+                    const dToEnemy = dist(c.x, c.y, targetEnemy.x, targetEnemy.y);
+                    const preferredDist = c.range * 0.75; // 保持在攻击范围的75%距离
+
+                    if (dToEnemy > preferredDist + 10) {
+                        // 太远，继续接近
+                        const angleToEnemy = Math.atan2(targetEnemy.y - c.y, targetEnemy.x - c.x);
+                        moveX = Math.cos(angleToEnemy) * c.speed * 0.8;
+                        moveY = Math.sin(angleToEnemy) * c.speed * 0.8;
+                    } else if (dToEnemy < preferredDist - 10) {
+                        // 太近，后退一点
+                        const angleToEnemy = Math.atan2(targetEnemy.y - c.y, targetEnemy.x - c.x);
+                        moveX = -Math.cos(angleToEnemy) * c.speed * 0.4;
+                        moveY = -Math.sin(angleToEnemy) * c.speed * 0.4;
+                    } else {
+                        // 距离合适，绕圈移动（切线方向）
+                        const angleToEnemy = Math.atan2(targetEnemy.y - c.y, targetEnemy.x - c.x);
+                        const tangentAngle = angleToEnemy + Math.PI / 2;
+                        moveX = Math.cos(tangentAngle) * c.speed * 0.5;
+                        moveY = Math.sin(tangentAngle) * c.speed * 0.5;
+                    }
+                } else {
+                    // 没有敌人或已攻击过，围绕主角缓慢移动
+                    c.idleAngle = (c.idleAngle || 0) + 0.015;
+                    const idleTargetX = player.x + Math.cos(c.idleAngle + c.orbitOffset) * c.orbitDist;
+                    const idleTargetY = player.y + Math.sin(c.idleAngle + c.orbitOffset) * c.orbitDist;
+                    moveX = (idleTargetX - c.x) * 0.06;
+                    moveY = (idleTargetY - c.y) * 0.06;
+                }
+
+                c.x += moveX * dt * 60;
+                c.y += moveY * dt * 60;
+
+                // 攻击逻辑
                 c.atkTimer -= dt;
+                let didAttack = false;
                 if (c.atkTimer <= 0) {
                     const base = companionTypes[c.type];
                     if (base.type === 'melee') {
@@ -3283,13 +4121,17 @@
                             const d = dist(c.x, c.y, e.x, e.y);
                             if (d < c.range) {
                                 damageEnemy(e, c.dmg * player.companionDmg);
+                                didAttack = true;
                             }
                         });
-                        particles.push({ x: c.x, y: c.y, r: c.range, maxR: c.range, life: 0.3, color: c.color, type: 'ring' });
+                        if (didAttack) {
+                            particles.push({ x: c.x, y: c.y, r: c.range, maxR: c.range, life: 0.3, color: c.color, type: 'ring' });
+                        }
                     } else if (base.type === 'ranged') {
                         const target = findNearestEnemy(c.x, c.y, c.range);
                         if (target) {
                             shootProjectile(c.x, c.y, target, c.dmg * player.companionDmg, c.color);
+                            didAttack = true;
                         }
                     } else if (base.type === 'charge') {
                         const target = findNearestEnemy(c.x, c.y, 300);
@@ -3298,9 +4140,16 @@
                             c.chargeDx = Math.cos(angle) * 8;
                             c.chargeDy = Math.sin(angle) * 8;
                             c.charging = 0.3;
+                            didAttack = true;
                         }
                     }
                     c.atkTimer = 1 / c.atkSpeed;
+
+                    // 攻击后标记为已攻击，优先返回不再追击
+                    if (didAttack && !c.isReturning) {
+                        c.hasAttacked = true;
+                        c.isReturning = true;
+                    }
                 }
 
                 if (c.charging > 0) {
@@ -3469,6 +4318,25 @@
                     value: 10,
                     r: 10
                 });
+            }
+
+            if (e.type === 'boss') {
+                const currentCount = dreamCores.count[selectedChar] || 0;
+                if (currentCount < dreamCores.capacity) {
+                    dreamCores.count[selectedChar] = currentCount + 1;
+                    saveDreamCores();
+                    showScorePopup(e.x, e.y - 30, '+1 梦境核心');
+                    setTimeout(() => {
+                        particles.push({
+                            x: e.x, y: e.y,
+                            vx: 0, vy: -1.5,
+                            life: 1.5,
+                            text: '✨ 梦境核心 +1',
+                            type: 'text',
+                            color: '#a29bfe'
+                        });
+                    }, 500);
+                }
             }
 
             for (let i = 0; i < 8; i++) {
