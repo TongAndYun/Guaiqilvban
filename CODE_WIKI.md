@@ -1,6 +1,6 @@
 # 怪奇旅伴 (Bizarre Brigade) - Code Wiki
 
-> **当前版本**: v1.1 | **作者**: 一个大伟丘&ZZZ
+> **当前版本**: v1.2 | **作者**: 一个大伟丘&ZZZ
 
 ## 目录
 
@@ -41,9 +41,11 @@
 - **40 个成就**：包含角色专属成就和通用成就
 - **商店系统**：每波结束可购买道具和旅伴
 - **旅伴升星系统**：相同星级旅伴可合成升级（最高 3 星）
+- **旅伴管理**：支持手动部署/请离，场上+库存统一合成
 - **自动攻击**：玩家自动锁定最近敌人攻击
 - **进度解锁**：通关解锁更高难度和新角色
 - **分享功能**：可分享游戏给朋友
+- **开发者模式**：Ctrl+Shift+D 开启，支持作弊和状态查看
 - **移动端适配**：支持手机/平板触屏操作
 
 ---
@@ -144,6 +146,44 @@ app_1790jfmbrps/
 - 暂停菜单提供：继续游戏、重新开始、返回主界面
 - 通过 `gameState` 状态机管理暂停状态
 
+### 3.4 开发者模式 (Developer Mode)
+
+**文件位置**：[index.html](file:///d:/游戏开发/怪奇旅伴/app_1790jfmbrps/src/index.html#L2175-L2273)
+
+按 `Ctrl+Shift+D` 快捷键打开开发者面板（游戏中可用）。
+
+**功能**：
+- 查看当前状态（生命、攻击、金币、梦境核心）
+- 梦境核心 +5
+- 金币 +1000
+- 恢复满血
+- 攻击 +10
+- 护甲 +5
+- 移速 +0.5
+- 生命 +50
+- 满额道具（所有道具各1个）
+- 强化旅伴（旅伴伤害 x2）
+- 解锁全部（难度+角色全解锁）
+
+**特性**：
+- 打开时暂停游戏（gameState = 'paused'）
+- 敌人生成继续进行（spawnEnemy、spawnBoss 支持 paused 状态）
+- 关闭时恢复游戏状态
+
+**作弊函数**：
+| 函数 | 说明 |
+|------|------|
+| `cheatAddCore()` | 增加梦境核心 |
+| `cheatAddGold()` | 增加金币 |
+| `cheatFullHp()` | 恢复满血 |
+| `cheatAddAtk()` | 增加攻击 |
+| `cheatAddArmor()` | 增加护甲 |
+| `cheatAddSpeed()` | 增加移速 |
+| `cheatAddHp()` | 增加生命 |
+| `cheatFullRelic()` | 给予所有道具 |
+| `cheatBuffCompanion()` | 旅伴伤害翻倍 |
+| `cheatUnlockAll()` | 解锁全部内容 |
+
 ### 3.4 解锁系统 (Unlock System)
 
 **文件位置**：[index.html](file:///d:/游戏开发/怪奇旅伴/app_1790jfmbrps/src/index.html#L1397-L1435)
@@ -157,9 +197,9 @@ app_1790jfmbrps/
 **文件位置**：[index.html](file:///d:/游戏开发/怪奇旅伴/app_1790jfmbrps/src/index.html#L1699-L1819)
 
 按 `K` 键打开，三个标签页：
-1. **🦸 角色** - 基础信息、战斗属性、特殊属性
+1. **🦸 角色** - 基础信息、战斗属性、特殊属性、成长率
 2. **💎 道具** - 已购买的遗物列表
-3. **👥 旅伴** - 已部署和待部署的旅伴
+3. **👥 旅伴** - 已部署和待部署的旅伴（支持部署/请离/合成）
 
 ### 3.6 商店系统 (Shop System)
 
@@ -176,9 +216,12 @@ app_1790jfmbrps/
 
 **文件位置**：[index.html](file:///d:/游戏开发/怪奇旅伴/app_1790jfmbrps/src/index.html#L2200-L2270)
 
-- 最多同时部署 3 个旅伴
+- 最多同时部署 **5 个旅伴**（`MAX_COMPANIONS = 5`）
 - 旅伴围绕玩家轨道运行
-- 三星合成机制：3 个 1 星 → 1 个 2 星，3 个 2 星 → 1 个 3 星
+- **三星合成机制**：场上 + 库存中相同类型星级的旅伴总数 >= 3 时自动合成
+  - 3 个 1 星 → 1 个 2 星
+  - 3 个 2 星 → 1 个 3 星
+- **手动部署/请离**：点击旅伴图标进行操作
 - 升星提升伤害、攻击范围等属性
 
 **旅伴类型**：
@@ -188,7 +231,24 @@ app_1790jfmbrps/
 | 弓手 🏹 | 远程投射物 | 安全距离、中等伤害 |
 | 冲锋车 🚗 | 冲撞直线伤害 | 爆发伤害、冷却长 |
 
-### 3.8 渲染系统 (Render System)
+**旅伴管理**：
+- **主界面旅伴栏**：点击已部署旅伴请离，点击库存旅伴部署（支持合成）
+- **角色详情面板（K键）**：显示"部署"和"请离"按钮，支持合成
+
+**相关函数**：
+| 函数 | 说明 |
+|------|------|
+| `addCompanion(type, star)` | 购买旅伴，自动部署或入库存 |
+| `deployCompanionFromInventory(idx)` | 从库存部署旅伴，支持合成 |
+| `recallCompanion(idx)` | 请离旅伴回库存 |
+| `spawnCompanion(type, star)` | 生成旅伴到战场 |
+| `updateCompanionOrbits()` | 更新轨道分布 |
+| `updateCompanionUI()` | 更新旅伴栏UI |
+| `renderCompsInfo()` | 渲染角色面板的旅伴列表 |
+| `deployCompanionFromInfo(idx)` | 从角色面板部署旅伴 |
+| `recallCompanionFromInfo(idx)` | 从角色面板请离旅伴 |
+
+### 3.9 渲染系统 (Render System)
 
 **文件位置**：[index.html](file:///d:/游戏开发/怪奇旅伴/app_1790jfmbrps/src/index.html#L2604-L2751)
 
@@ -430,17 +490,37 @@ player = {
 **`addCompanion(type, star)`**  
 **文件位置**：[index.html](file:///d:/游戏开发/怪奇旅伴/app_1790jfmbrps/src/index.html#L2200-L2221)
 
-添加旅伴，处理三星合成逻辑。
+购买旅伴，自动部署或进入库存，自动处理合成逻辑。
+
+**`deployCompanionFromInventory(idx)`**  
+**文件位置**：[index.html](file:///d:/游戏开发/怪奇旅伴/app_1790jfmbrps/src/index.html#L3840-L3879)
+
+从库存部署旅伴到战场。检查场上+库存中相同类型星级的总数 >= 3 时自动合成。
+
+**`recallCompanion(idx)`**  
+**文件位置**：[index.html](file:///d:/游戏开发/怪奇旅伴/app_1790jfmbrps/src/index.html#L3911-L3917)
+
+将已部署的旅伴请离回库存。
 
 **`spawnCompanion(type, star)`**  
-**文件位置**：[index.html](file:///d:/游戏开发/怪奇旅伴/app_1790jfmbrps/src/index.html#L2223-L2241)
+**文件位置**：[index.html](file:///d:/游戏开发/怪奇旅伴/app_1790jfmbrps/src/index.html#L3852-L3878)
 
-实例化一个旅伴并加入战场。
+实例化一个旅伴并加入战场，设置伤害、范围、轨道参数。
 
 **`updateCompanionOrbits()`**  
-**文件位置**：[index.html](file:///d:/游戏开发/怪奇旅伴/app_1790jfmbrps/src/index.html#L2243-L2251)
+**文件位置**：[index.html](file:///d:/游戏开发/怪奇旅伴/app_1790jfmbrps/src/index.html#L3870-L3875)
 
 重新计算所有旅伴的轨道参数（均匀分布）。
+
+**`updateCompanionUI()`**  
+**文件位置**：[index.html](file:///d:/游戏开发/怪奇旅伴/app_1790jfmbrps/src/index.html#L3919-L3938)
+
+更新主界面旅伴栏UI，已部署旅伴可点击请离，库存旅伴可点击部署。
+
+**`renderCompsInfo()`**  
+**文件位置**：[index.html](file:///d:/游戏开发/怪奇旅伴/app_1790jfmbrps/src/index.html#L3268-L3295)
+
+渲染角色详情面板（K键）的旅伴列表，添加部署/请离按钮。
 
 ### 5.7 游戏状态管理
 
@@ -783,12 +863,12 @@ try {
 | 部分 | 估计行数 | 占比 |
 |------|---------|-----|
 | HTML 结构 | ~250 行 | ~8% |
-| CSS 样式 | ~900 行 | ~30% |
-| JavaScript 逻辑 | ~1800 行 | ~55% |
-| 空行/注释 | ~200 行 | ~8% |
-| **总计** | **~2700 行** | **100%** |
+| CSS 样式 | ~950 行 | ~30% |
+| JavaScript 逻辑 | ~1950 行 | ~55% |
+| 空行/注释 | ~200 行 | ~7% |
+| **总计** | **~2800 行** | **100%** |
 
 ---
 
-*Wiki 版本：v1.0*  
-*最后更新：2026-06-28*
+*Wiki 版本：v1.2*  
+*最后更新：2026-06-29*
